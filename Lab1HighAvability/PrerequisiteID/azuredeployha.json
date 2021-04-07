@@ -65,7 +65,7 @@
         "CreateADPDCModulesURL":"https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/CreateADPDC.zip?raw=true",
         "ConfigurationADPDCFunction": "CreateADPDC.ps1\\CreateADPDC",
         "AzureADConnectOuUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/DSC/ou.ps1",
-        "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
+        "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
         "initDiskModuleURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/InitDisk.zip?raw=true" ,
         "initDiskFunction": "InitDisk.ps1\\InitDisk",
         "PreparationadBDCModulesURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/PrepareADBDC.zip?raw=true",
