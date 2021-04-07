@@ -472,7 +472,7 @@
                     "fileUris": [
                         "[variables('AzureADConnectInstallationUri')]"
                     ],
-                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File Installationv2.ps1')]"
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File Installationadconnect.ps1')]"
 
                 },
                 "protectedSettings": {
