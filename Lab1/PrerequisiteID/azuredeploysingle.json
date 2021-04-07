@@ -55,7 +55,15 @@
         "HostssubnetRange": "10.0.1.0/24",
         "BastionsubnetRange": "10.0.2.0/24",
         "bastion-host-name": "WVD-Bastion",
-        "adAvailabilitySetName": "adAvailabiltySet"
+        "adAvailabilitySetName": "adAvailabiltySet",
+        "vnetTemplateUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/Nested/vnet.json",
+        "vnetwithDNSserverTemplateUri":"https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/Nested/vnet-with-dns-server.json",
+        "CreateADPDCModulesURL":"https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1/PrerequisiteID/DSC/CreateADPDC.zip?raw=true",
+        "ConfigurationADPDCFunction": "CreateADPDC.ps1\\CreateADPDC",
+        "AzureADConnectOuUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/DSC/ou.ps1",
+        "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
+        "initDiskModuleURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1/PrerequisiteID/DSC/InitDisk.zip?raw=true" ,
+        "initDiskFunction": "InitDisk.ps1\\InitDisk"
     },
     "resources": [
         {
@@ -90,7 +98,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDTraining/main/ActiveDirectoryCreation/Nested/vnet.json",
+                    "uri": "[variables('vnetTemplateUri')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -265,8 +273,8 @@
                         "typeHandlerVersion": "2.19",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
-                            "ModulesUrl": "https://github.com/Aldebarancloud/WVDTraining/blob/main/ActiveDirectoryCreation/Nested/CreateADPDC.zip?raw=true",
-                            "ConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
+                            "ModulesUrl": "[variables('CreateADPDCModulesURL')]",
+                            "ConfigurationFunction": "[variables('ConfigurationADPDCFunction')]",
                             "Properties": {
                                 "DomainName": "[parameters('domainName')]",
                                 "AdminCreds": {
@@ -294,7 +302,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDTraining/main/ActiveDirectoryCreation/Nested/vnet-with-dns-server.json",
+                    "uri": "[variables('vnetwithDNSserverTemplateUri')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -373,7 +381,7 @@
                 "typeHandlerVersion": "1.9",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/Aldebarancloud/WVDTraining/main/ActiveDirectoryCreation/AzureAdConnect/ou.ps1"
+                        "[variables('AzureADConnectOuUri')]"
                     ],
                     "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File ou.ps1', ' -ouUsers ', '\"' , variables('ouUsers') , '\"', ' -ouHosts ', '\"' , variables('ouHosts') , '\"') ]"
                 },
@@ -462,9 +470,9 @@
                 "typeHandlerVersion": "1.9",
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/Aldebarancloud/WVDTraining/main/ActiveDirectoryCreation/AzureAdConnect/Installationv2.ps1"
+                        "[variables('AzureADConnectInstallationUri')]"
                     ],
-                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File Installationv2.ps1')]"
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File Installationadconnect.ps1')]"
 
                 },
                 "protectedSettings": {
@@ -539,8 +547,8 @@
                         "typeHandlerVersion": "2.19",
                         "autoUpgradeMinorVersion": true,
                         "settings": {
-                            "ModulesUrl": "https://github.com/Aldebarancloud/WVDTraining/blob/main/ActiveDirectoryCreation/Nested/InitDisk.zip?raw=true",
-                            "ConfigurationFunction": "InitDisk.ps1\\InitDisk",
+                            "ModulesUrl": "[variables('initDiskModuleURL')]",
+                            "ConfigurationFunction": "[variables('initDiskFunction')]",
                             "Properties": {
                                 "DomainName": "[parameters('domainName')]",
                                 "AdminCreds": {
