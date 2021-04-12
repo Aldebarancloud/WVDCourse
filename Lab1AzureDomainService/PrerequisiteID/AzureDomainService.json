@@ -2,44 +2,51 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.2",
     "parameters": {
-        "tenantAdministrator": {
-            "type": "String"
-        },
         "domainName": {
             "type": "String"
         },
         "addBastionHost": {
-            "type": "String"
+            "type": "String",
+            "allowedValues": ["Yes", "No"]
         },
         "vnetResourceGroup": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
         },
         "location": {
-            "type": "String"
-        },
-        "domainConfigurationType": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
         },
         "notificationSettings": {
-            "type": "Object"
-        },
-        "filteredSync": {
-            "type": "String"
+            "value": {
+                "notifyGlobalAdmins": "Enabled",
+                "notifyDcAdmins": "Enabled",
+                "additionalRecipients": []
+            }
         }
     },
     "variables": {
-        "nsgName": "AADDS-NSG",
-        "subnetName": "DomainServices",
-        "workloadsSubnetName": "Workloads",
-        "vnetName": "AADDS-VNet",
+        "nsgName": "aadds-NSG",
+        "subnetName": "aadds-Subnet",
+        "workloadsSubnetName": "WVD-Subnet",
+        "vnetName": "aadds-Vnet",
         "bastionSubnetName": "AzureBastionSubnet",
         "vnetAddressRange": "10.0.0.0/16",
         "subnet1AddressRange": "10.0.0.0/24",
         "subnet2AddressRange": "10.0.1.0/24",
         "subnet3AddressRange": "10.0.2.0/27",
         "bastionHostName": "AzureBastionHost",
-        "bastionPipName": "bastionHost-pip",
-        "sku": "Standard"
+        "bastionPipName": "bastionpip",
+        "sku": "Standard",
+        "domainConfigurationType": "FullySynced",
+        "filteredSync": "Disabled"
+
     },
     "resources": [
         {
@@ -54,8 +61,8 @@
             "properties": {
                 "domainName": "[parameters('domainName')]",
                 "subnetId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('vnetResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/', variables('subnetName'))]",
-                "filteredSync": "[parameters('filteredSync')]",
-                "domainConfigurationType": "[parameters('domainConfigurationType')]",
+                "filteredSync": "[variables('filteredSync')]",
+                "domainConfigurationType": "[variables('domainConfigurationType')]",
                 "notificationSettings": "[parameters('notificationSettings')]",
                 "sku": "[variables('sku')]"
             }
@@ -166,7 +173,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/rbergertd/aadds/master/nested/aadds-update-vnet-dns_v2.json",
+                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -214,7 +221,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/rbergertd/aadds/master/nested/aadds-update-vnet-dns-bastion_v2.json",
+                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns-bastion.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
