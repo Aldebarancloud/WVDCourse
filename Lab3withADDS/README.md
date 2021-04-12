@@ -8,5 +8,10 @@ Set up of the Soft Delete on the Azure File for 7 days
 
 Task after the deployment for Configuration with Azure Domain Services
 
-go to your storage account 
+Go to your storage account
 Click on Configuration
+
+![Capture](https://user-images.githubusercontent.com/45065026/114403710-51d8bd80-9ba5-11eb-83d6-7a5d7e99e780.PNG)
+
+On the feature Identity-based access for the share
+Click Enable
