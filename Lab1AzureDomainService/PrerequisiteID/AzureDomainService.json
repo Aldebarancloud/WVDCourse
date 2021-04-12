@@ -22,13 +22,6 @@
             "metadata": {
                 "description": "Location for all resources."
             }
-        },
-        "notificationSettings": {
-            "value": {
-                "notifyGlobalAdmins": "Enabled",
-                "notifyDcAdmins": "Enabled",
-                "additionalRecipients": []
-            }
         }
     },
     "variables": {
