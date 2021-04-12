@@ -60,19 +60,19 @@
         "Advm2Size": "Standard_D2s_v3",
         "Ad2networkInterfaceName": "AD2-Nic",
         "Ad2privateIPAddress": "10.0.0.7",
-        "vnetTemplateUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/Nested/vnet.json",
-        "vnetwithDNSserverTemplateUri":"https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/Nested/vnet-with-dns-server.json",
-        "CreateADPDCModulesURL":"https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/CreateADPDC.zip?raw=true",
+        "vnetTemplateUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/Nested/vnet.json",
+        "vnetwithDNSserverTemplateUri":"https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/Nested/vnet-with-dns-server.json",
+        "CreateADPDCModulesURL":"https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1/PrerequisiteID/DSC/CreateADPDC.zip?raw=true",
         "ConfigurationADPDCFunction": "CreateADPDC.ps1\\CreateADPDC",
-        "AzureADConnectOuUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/DSC/ou.ps1",
-        "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
-        "initDiskModuleURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/InitDisk.zip?raw=true",
+        "AzureADConnectOuUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/DSC/ou.ps1",
+        "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
+        "initDiskModuleURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1/PrerequisiteID/DSC/InitDisk.zip?raw=true" ,
         "initDiskFunction": "InitDisk.ps1\\InitDisk",
-        "PreparationadBDCModulesURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/PrepareADBDC.zip?raw=true",
         "PreparationadBDCFunction": "PrepareADBDC.ps1\\PrepareADBDC",
-        "ConfigurationadBDCModulesURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/ConfigureADBDC.zip?raw=true",
         "ConfigurationadBDCFunction": "ConfigureADBDC.ps1\\ConfigureADBDC",
-        "ConfigureadBDCUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/Nested/configureADBDC.json"
+        "PreparationadBDCModulesURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/PrepareADBDC.zip?raw=true",
+        "configureADBDCUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1HighAvability/PrerequisiteID/Nested/configureADBDC.json",
+        "ConfigureADBDCModulesURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1HighAvability/PrerequisiteID/DSC/ConfigureADBDC.zip?raw=true"
     },
     "resources": [
         {
@@ -514,7 +514,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('ConfigurationadBDCModulesURL')]",
+                    "uri": "[variables('configureADBDCUri')]", 
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -537,7 +537,7 @@
                         "value": "[variables('ConfigurationadBDCFunction')]"
                     },
                     "adBDCConfigurationModulesURL": {
-                        "value": "[variables('ConfigureadBDCUri')]"
+                        "value": "[variables('ConfigureADBDCModulesURL')]"
                     }
                 }
             }
