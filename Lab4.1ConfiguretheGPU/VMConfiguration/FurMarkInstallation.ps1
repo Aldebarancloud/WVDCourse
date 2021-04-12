@@ -8,7 +8,7 @@
 $folder = "D:\FuRMark"
 New-Item -Path $folder -ItemType Directory
 
-$FurMarkSource = "https://github.com/Aldebarancloud/Training-WVD/blob/master/WVDGPU/FurMark_1.25.0.0_Setup.exe?raw=true"
+$FurMarkSource = "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab4.1ConfiguretheGPU/VMConfiguration/FurMark_1.25.0.0_Setup.exe?raw=true"
 $locationFurMark = "D:\FuRMark\FurMark_1.25.0.0_Setup.exe"
 
 
