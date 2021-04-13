@@ -110,7 +110,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('subnetRange')]",
                             "networkSecurityGroup": {
-                                "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('ResourceGroup'), '/providers/Microsoft.Network/NetworkSecurityGroups/', parameters('nsgName'))]"
+                                "id": "[resourceId('Microsoft.Network/NetworkSecurityGroups/', variables('nsgName'))]"
                             }
                         }
                     },
