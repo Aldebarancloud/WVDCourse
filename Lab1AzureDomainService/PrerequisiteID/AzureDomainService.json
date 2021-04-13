@@ -3,15 +3,15 @@
     "contentVersion": "1.0.0.2",
     "parameters": {
         "domainName": {
-            "type": "String"
-        },
-        "addBastionHost": {
             "type": "String",
-            "allowedValues": ["Yes", "No"]
+            "defaultValue": "myad.com",
+            "metadata": {
+                "description": "Domain Name."
+            }
         },
         "vnetResourceGroup": {
             "type": "String",
-            "defaultValue": "[resourceGroup().location]",
+            "defaultValue": "[resourceGroup().name]",
             "metadata": {
                 "description": "Location for all resources."
             }
@@ -56,7 +56,6 @@
                 "subnetId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('vnetResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/', variables('subnetName'))]",
                 "filteredSync": "[variables('filteredSync')]",
                 "domainConfigurationType": "[variables('domainConfigurationType')]",
-                "notificationSettings": "[parameters('notificationSettings')]",
                 "sku": "[variables('sku')]"
             }
         },
@@ -159,54 +158,6 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
-            "name": "UpdateVNetDNS",
-            "dependsOn": [
-                "[concat('Microsoft.AAD/domainServices/', parameters('domainName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns.json",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "virtualNetworkName": {
-                        "value": "[variables('vnetName')]"
-                    },
-                    "vnetResourceGroup": {
-                        "value": "[parameters('vnetResourceGroup')]"
-                    },
-                    "virtualNetworkAddressRange": {
-                        "value": "[variables('vnetAddressRange')]"
-                    },
-                    "subnetName": {
-                        "value": "[variables('subnetName')]"
-                    },
-                    "workloadsSubnetName": {
-                        "value": "[variables('workloadsSubnetName')]"
-                    },
-                    "subnetRange": {
-                        "value": "[variables('subnet1AddressRange')]"
-                    },
-                    "workloadsSubnetRange": {
-                        "value": "[variables('subnet2AddressRange')]"
-                    },
-                    "nsgName": {
-                        "value": "[variables('nsgName')]"
-                    },
-                    "DNSServerAddress": {
-                        "value": [
-                            "10.0.0.4",
-                            "10.0.0.5"
-                        ]
-                    }
-                }
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'No')]"
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2016-02-01",
             "name": "UpdateVNetDNSWithBastion",
             "dependsOn": [
                 "[concat('Microsoft.AAD/domainServices/', parameters('domainName'))]"
@@ -255,8 +206,7 @@
                         ]
                     }
                 }
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         },
         {
             "type": "Microsoft.Network/publicIpAddresses",
@@ -268,8 +218,7 @@
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         },
         {
             "type": "Microsoft.Network/bastionHosts",
@@ -295,8 +244,7 @@
                         }
                     }
                 ]
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         }
     ],
     "outputs": {}
