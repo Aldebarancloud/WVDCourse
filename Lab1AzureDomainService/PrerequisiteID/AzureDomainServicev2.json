@@ -11,10 +11,6 @@
         },
         "domainName": {
             "type": "String"
-        },
-        "addBastionHost": {
-            "type": "String",
-            "allowedValues": ["Yes", "No"]
         }
     },
     "variables": {
@@ -31,18 +27,9 @@
         "bastionPipName": "bastionpip",
         "sku": "Standard",
         "domainConfigurationType": "FullySynced",
-        "filteredSync": "Disabled",
-        "ResourceGroup": "aadds-RG"
-
+        "filteredSync": "Disabled"
     },
     "resources": [
-        {
-            "type": "Microsoft.Resources/resourceGroups",
-            "apiVersion": "2018-05-01",
-            "location": "[parameters('Location')]",
-            "name": "[variables('ResourceGroup')]",
-            "properties": {}
-        },
         {
             "type": "Microsoft.AAD/DomainServices",
             "apiVersion": "2017-06-01",
@@ -54,7 +41,7 @@
             ],
             "properties": {
                 "domainName": "[parameters('domainName')]",
-                "subnetId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('ResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/', variables('subnetName'))]",
+                "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), '/subnets/', variables('subnetName'))]",
                 "filteredSync": "[variables('filteredSync')]",
                 "domainConfigurationType": "[variables('domainConfigurationType')]",
                 "sku": "[variables('sku')]"
@@ -137,7 +124,7 @@
                     "properties": {
                         "addressPrefix": "[variables('subnet1AddressRange')]",
                         "networkSecurityGroup": {
-                            "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('ResourceGroup'), '/providers/Microsoft.Network/NetworkSecurityGroups/', variables('nsgName'))]"
+                            "id": "[resourceId('Microsoft.Network/NetworkSecurityGroups/', variables('nsgName'))]"
                         }
                     }
                 },
@@ -155,54 +142,6 @@
                     }
                 }
             ]
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2016-02-01",
-            "name": "UpdateVNetDNS",
-            "dependsOn": [
-                "[concat('Microsoft.AAD/domainServices/', parameters('domainName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dnsv2.json",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "virtualNetworkName": {
-                        "value": "[variables('vnetName')]"
-                    },
-                    "vnetResourceGroup": {
-                        "value": "[variables('ResourceGroup')]"
-                    },
-                    "virtualNetworkAddressRange": {
-                        "value": "[variables('vnetAddressRange')]"
-                    },
-                    "subnetName": {
-                        "value": "[variables('subnetName')]"
-                    },
-                    "workloadsSubnetName": {
-                        "value": "[variables('workloadsSubnetName')]"
-                    },
-                    "subnetRange": {
-                        "value": "[variables('subnet1AddressRange')]"
-                    },
-                    "workloadsSubnetRange": {
-                        "value": "[variables('subnet2AddressRange')]"
-                    },
-                    "nsgName": {
-                        "value": "[variables('nsgName')]"
-                    },
-                    "DNSServerAddress": {
-                        "value": [
-                            "10.0.0.4",
-                            "10.0.0.5"
-                        ]
-                    }
-                }
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'No')]"
         },
         {
             "type": "Microsoft.Resources/deployments",
@@ -255,8 +194,7 @@
                         ]
                     }
                 }
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         },
         {
             "type": "Microsoft.Network/publicIpAddresses",
@@ -268,8 +206,7 @@
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         },
         {
             "type": "Microsoft.Network/bastionHosts",
@@ -295,8 +232,7 @@
                         }
                     }
                 ]
-            },
-            "condition": "[equals(parameters('addBastionHost'), 'Yes')]"
+            }
         }
     ],
     "outputs": {}
