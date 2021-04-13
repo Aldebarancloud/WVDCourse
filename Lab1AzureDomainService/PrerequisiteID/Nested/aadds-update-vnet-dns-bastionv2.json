@@ -10,13 +10,6 @@
             "defaultValue": "AADDS-VNet"
 
         },
-        "virtualNetworkAddressRange": {
-            "type": "string",
-            "metadata": {
-                "description": "The address range of the new VNET in CIDR format"
-            },
-            "defaultValue": "10.0.0.0/16"
-        },
         "vnetResourceGroup": {
             "type": "string",
             "metadata": {
@@ -24,6 +17,13 @@
             },
             "defaultValue": ""
 
+        },
+        "virtualNetworkAddressRange": {
+            "type": "string",
+            "metadata": {
+                "description": "The address range of the new VNET in CIDR format"
+            },
+            "defaultValue": "10.0.0.0/16"
         },
         "subnetName": {
             "type": "string",
