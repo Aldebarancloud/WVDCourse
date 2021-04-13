@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location of the Shared Image Gallery."
+      }
+    }
+  },
+  "variables": {
+      "galleryName": "WVDImage"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/galleries",
+      "name": "[variables('galleryName')]",
+      "apiVersion": "2019-12-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "description": "My Private Gallery"
+      }
+    }
+  ]
+}
