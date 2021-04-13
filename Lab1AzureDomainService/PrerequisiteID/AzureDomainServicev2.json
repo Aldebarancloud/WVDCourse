@@ -2,15 +2,15 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.2",
     "parameters": {
-        "domainName": {
-            "type": "String"
-        },
         "location": {
             "type": "String",
             "defaultValue": "[resourceGroup().location]",
             "metadata": {
                 "description": "Location for all resources."
             }
+        },
+        "domainName": {
+            "type": "String"
         }
     },
     "variables": {
@@ -28,7 +28,6 @@
         "sku": "Standard",
         "domainConfigurationType": "FullySynced",
         "filteredSync": "Disabled"
-
     },
     "resources": [
         {
@@ -42,7 +41,7 @@
             ],
             "properties": {
                 "domainName": "[parameters('domainName')]",
-                "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]",
+                "subnetRefId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
                 "filteredSync": "[variables('filteredSync')]",
                 "domainConfigurationType": "[variables('domainConfigurationType')]",
                 "sku": "[variables('sku')]"
@@ -125,7 +124,7 @@
                     "properties": {
                         "addressPrefix": "[variables('subnet1AddressRange')]",
                         "networkSecurityGroup": {
-                            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                            "id": "[resourceId('Microsoft.Network/NetworkSecurityGroups/', variables('nsgName'))]"
                         }
                     }
                 },
@@ -160,6 +159,9 @@
                 "parameters": {
                     "virtualNetworkName": {
                         "value": "[variables('vnetName')]"
+                    },
+                    "vnetResourceGroup": {
+                        "value": "[variables('ResourceGroup')]"
                     },
                     "virtualNetworkAddressRange": {
                         "value": "[variables('vnetAddressRange')]"
