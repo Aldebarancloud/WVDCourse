@@ -17,6 +17,14 @@
             },
             "defaultValue": "10.0.0.0/16"
         },
+        "vnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "The resource group name of the VNet."
+            },
+            "defaultValue": ""
+
+        },
         "subnetName": {
             "type": "string",
             "metadata": {
