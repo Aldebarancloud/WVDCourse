@@ -85,7 +85,7 @@
             "metadata": {
                 "description": "Name of the NSG to apply to Domain Services subnet"
             },
-            "defaultValue": "AADDS-NSG"
+            "defaultValue": "aadds-NSG"
         },
         "location": {
             "type": "string",
