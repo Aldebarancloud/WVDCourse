@@ -1,3 +1,5 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 #Variables Teams
 $TeamsSource = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.21759/Teams_windows_x64.msi"
 $locationteamsdownload = "C:\"
@@ -11,8 +13,6 @@ Start-BitsTransfer -Source $TeamsSource -Destination $locationteamsdownload
 
 #Run this following command to install Teams
 msiexec /i $locationteams /l*v teams_install.log ALLUSERS=1 ALLUSER=1
-
-"https://teams.microsoft.com/downloads/desktopurl?env=production&plat=windows&arch=x64&managedInstaller=true&download=true"
 
 #Fallback mode in Teams
 #audio only

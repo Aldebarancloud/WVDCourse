@@ -38,8 +38,8 @@
         "bastionPipName": "bastionpip",
         "sku": "Standard",
         "domainConfigurationType": "FullySynced",
-        "filteredSync": "Disabled"
-
+        "filteredSync": "Disabled",
+        "urivnetdnsbastion": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns-bastion.json"
     },
     "resources": [
         {
@@ -165,7 +165,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns-bastion.json",
+                    "uri": "[variables('urivnetdnsbastion')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {

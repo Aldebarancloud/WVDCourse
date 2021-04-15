@@ -1,6 +1,7 @@
 #############################################
 #    Create a New Active Directory Group    #
 #############################################
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Import-Module ActiveDirectory
 $AdGroup = "VDIuser"
 $AdGroup2 = "VDIadmin"

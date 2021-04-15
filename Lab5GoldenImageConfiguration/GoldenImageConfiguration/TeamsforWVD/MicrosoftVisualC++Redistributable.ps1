@@ -1,3 +1,5 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 #VisualC++ Source x64
 $VisualCSource = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
 $location = "D:\"

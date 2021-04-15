@@ -5,3 +5,9 @@ choco install firefox -y
 choco install vlc -y
 choco install vscode -y
 choco install spotify -y
+choco install drawio -y
+choco install notepadplusplus.install -y
+choco install zoom -y
+choco install deepl -y
+choco install teamviewer -y
+choco install winrar -y

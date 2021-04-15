@@ -1,6 +1,8 @@
 #Uninstall One Drive current version
 #Do it manually through app andp
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 #OneDrive Per-Machine Source
 $OneDriveSource = "https://go.microsoft.com/fwlink/?linkid=844652"
 
