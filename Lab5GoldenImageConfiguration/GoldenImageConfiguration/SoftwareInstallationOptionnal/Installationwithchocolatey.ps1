@@ -11,3 +11,4 @@ choco install zoom -y
 choco install deepl -y
 choco install teamviewer -y
 choco install winrar -y
+choco install microsoft-edge -y

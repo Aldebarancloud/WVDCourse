@@ -6,13 +6,13 @@ Set-Location HKLM:\SOFTWARE\
 
 #stop on the Edge update 89 waiting for new update with new release of the feature
 #New-ItemProperty `
-    #-Path HKLM:\Software\Policies\Microsoft\Edge `
+    #-Path HKLM:\Software\Policies\Microsoft\MicrosoftEdge `
     #-Name "StartupBoostEnabled" `
     #-Type "Dword" `
     #-Value "1"
 
 New-ItemProperty `
-    -Path HKLM:\Software\Policies\Microsoft\Edge `
+    -Path HKLM:\Software\Policies\Microsoft\MicrosoftEdge `
     -Name "SleepingTabsEnabled" `
     -Type "Dword" `
     -Value "1"
