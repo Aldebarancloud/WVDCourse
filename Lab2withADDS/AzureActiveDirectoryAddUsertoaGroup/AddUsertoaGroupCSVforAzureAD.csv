@@ -1,5 +1,5 @@
 ﻿version:v1.0
-User name [userPrincipalName] Required
+Member object ID or user principal name [memberObjectIdOrUpn] Required
 Batman@tdfr.onmicrosoft.com
 AlfredPennyworth@.onmicrosoft.com
 Robin@.onmicrosoft.com
