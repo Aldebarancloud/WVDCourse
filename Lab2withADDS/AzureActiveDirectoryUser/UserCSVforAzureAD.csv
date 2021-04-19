@@ -1,30 +1,30 @@
 ﻿version:v1.0
 Name [displayName] Required,User name [userPrincipalName] Required,Initial password [passwordProfile] Required,Block sign in (Yes/No) [accountEnabled] Required
 Batman,Batman@tdfr.onmicrosoft.com,Demowvd2022!,No
-Alfred Pennyworth,AlfredPennyworthtdfr.onmicrosoft.com,Demowvd2022!,No
-Robin,Robin.onmicrosoft.com,Demowvd2022!,No
-Dick Grayson,DickGrayson.onmicrosoft.com,Demowvd2022!,No
-Batgirl,Batgirl.onmicrosoft.com,Demowvd2022!,No
-RedRobin,RedRobin.onmicrosoft.com,Demowvd2022!,No
-Nigthwing,Nigthwing.onmicrosoft.com,Demowvd2022!,No
-Jason Todd,JasonTodd.onmicrosoft.com,Demowvd2022!,No
-Damian Wayne,DamianWayne.onmicrosoft.com,Demowvd2022!,No
-Tim Drake,TimDrake.onmicrosoft.com,Demowvd2022!,No
-Barbara Gordon,BarbaraGordon.onmicrosoft.com,Demowvd2022!,No
-Catwoman,Catwoman.onmicrosoft.com,Demowvd2022!,No
-Ace LeBatChien,AceLeBatChien.onmicrosoft.com,Demowvd2022!,No
-RedHood,RedHood.onmicrosoft.com,Demowvd2022!,No
-Batwoman,Batwoman.onmicrosoft.com,Demowvd2022!,No
-Terry McGinnis,TerryMcGinnis.onmicrosoft.com,Demowvd2022!,No
-Joker,Joker.onmicrosoft.com,Demowvd2022!,No
-Kathy Kane,KathyKane.onmicrosoft.com,Demowvd2022!,No
-Superman,Superman.onmicrosoft.com,Demowvd2022!,No
-GreenArrow,GreenArrow.onmicrosoft.com,Demowvd2022!,No
-Harley Quinn,HarleyQuinn.onmicrosoft.com,Demowvd2022!,No
-Aquaman,Aquaman.onmicrosoft.com,Demowvd2022!,No
-Selina Kyle,SelinaKyle.onmicrosoft.com,Demowvd2022!,No
-Poison Ivy,PoisonIvy.onmicrosoft.com,Demowvd2022!,No
-Pingouin,Pingouin.onmicrosoft.com,Demowvd2022!,No
-Double Face,DoubleFace.onmicrosoft.com,Demowvd2022!,No
-Titans,Titans.onmicrosoft.com,Demowvd2022!,No
-Teen Titans,TeenTitans.onmicrosoft.com,Demowvd2022!,No
+Alfred Pennyworth,AlfredPennyworth@.onmicrosoft.com,Demowvd2022!,No
+Robin,Robin@.onmicrosoft.com,Demowvd2022!,No
+Dick Grayson,DickGrayson@.onmicrosoft.com,Demowvd2022!,No
+Batgirl,Batgirl@.onmicrosoft.com,Demowvd2022!,No
+RedRobin,RedRobin@.onmicrosoft.com,Demowvd2022!,No
+Nigthwing,Nigthwing@.onmicrosoft.com,Demowvd2022!,No
+Jason Todd,JasonTodd@.onmicrosoft.com,Demowvd2022!,No
+Damian Wayne,DamianWayne@.onmicrosoft.com,Demowvd2022!,No
+Tim Drake,TimDrake@.onmicrosoft.com,Demowvd2022!,No
+Barbara Gordon,BarbaraGordon@.onmicrosoft.com,Demowvd2022!,No
+Catwoman,Catwoman@.onmicrosoft.com,Demowvd2022!,No
+Ace LeBatChien,AceLeBatChien@.onmicrosoft.com,Demowvd2022!,No
+RedHood,RedHood@.onmicrosoft.com,Demowvd2022!,No
+Batwoman,Batwoman@.onmicrosoft.com,Demowvd2022!,No
+Terry McGinnis,TerryMcGinnis@.onmicrosoft.com,Demowvd2022!,No
+Joker,Joker@.onmicrosoft.com,Demowvd2022!,No
+Kathy Kane,KathyKane@.onmicrosoft.com,Demowvd2022!,No
+Superman,Superman@.onmicrosoft.com,Demowvd2022!,No
+GreenArrow,GreenArrow@.onmicrosoft.com,Demowvd2022!,No
+Harley Quinn,HarleyQuinn@.onmicrosoft.com,Demowvd2022!,No
+Aquaman,Aquaman@.onmicrosoft.com,Demowvd2022!,No
+Selina Kyle,SelinaKyle@.onmicrosoft.com,Demowvd2022!,No
+Poison Ivy,PoisonIvy@.onmicrosoft.com,Demowvd2022!,No
+Pingouin,Pingouin@.onmicrosoft.com,Demowvd2022!,No
+Double Face,DoubleFace@.onmicrosoft.com,Demowvd2022!,No
+Titans,Titans@.onmicrosoft.com,Demowvd2022!,No
+Teen Titans,TeenTitans@.onmicrosoft.com,Demowvd2022!,No
