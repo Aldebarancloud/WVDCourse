@@ -16,7 +16,7 @@ New-AdGroup -Name $AdGroup2 -GroupScope Global -Path $Path
 #############################################
 #    Create a New Active Directory Group    #
 #############################################
-$CSV= "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab2/ActiveDirectoryUser/UserCSV.csv"
+$CSV= "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab2withAD/ActiveDirectoryUser/UserCSV.csv"
 $locationCSV = "D:\"
 
 Start-BitsTransfer -Source $CSV -Destination $locationCSV
