@@ -1,0 +1,30 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        }
+    },
+    "variables": {
+        "workspacename": "wvd-workspace",
+        "sku": "pergb2018"
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-03-15-preview",
+            "name": "[variables('workspacename')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "properties": {
+                "sku": {
+                    "name": "[variables('sku')]"
+                }
+            }
+        }
+    ]
+}

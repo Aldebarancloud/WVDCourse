@@ -99,14 +99,14 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "10.2.0.0/16"
+                        "10.1.0.0/16"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "[variables('GoldensubnetName')]",
                         "properties":{
-                            "addressPrefix": "10.2.0.0/24"
+                            "addressPrefix": "10.1.0.0/24"
                         }
                     }
                 ]
