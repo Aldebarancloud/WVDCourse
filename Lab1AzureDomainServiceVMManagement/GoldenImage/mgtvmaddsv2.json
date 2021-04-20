@@ -1,0 +1,120 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "secureString"
+        }
+    },
+    "variables": {
+        "virtualNetworkId": "/subscriptions/f487f0e2-e87a-4545-bfd9-970d04b4f9d5/resourceGroups/new/providers/Microsoft.Network/virtualNetworks/aadds-Vnet",
+        "vnetId": "[variables('virtualNetworkId')]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('existingSubnetName'))]",
+        "networkSecurityGroupId": "/subscriptions/f487f0e2-e87a-4545-bfd9-970d04b4f9d5/resourceGroups/new/providers/Microsoft.Network/networkSecurityGroups/aadds-NSG",
+        "nsgId": "[variables('networkSecurityGroupId')]",
+        "ManagementvmSize": "Standard_D2s_v3",
+        "ManagementName": "Mgt-VM",
+        "ManagementnetworkInterfaceName": "Mgt-Nic",
+        "virtualMachineComputerName": "Mgt-VM",
+        "existingVNETName": "aadds-Vnet",
+        "existingSubnetName": "WVD-Subnet",
+        "osDiskType": "Premium_LRS",
+        "enableHotpatching": "false",
+        "patchMode": "AutomaticByOS",
+        "ManagementToolsUri": ""
+    },
+    "resources": [
+        {
+            "name": "[variables('ManagementnetworkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        }
+                    }
+                ],
+                "networkSecurityGroup":{
+                    "id": "[variables('nsgId')]"
+                }
+            }
+        },
+        {
+            "name": "[variables('ManagementName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2020-12-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('ManagementnetworkInterfaceName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('ManagementvmSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[variables('osDiskType')]"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('ManagementnetworkInterfaceName'))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachineComputerName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true,
+                        "patchSettings": {
+                            "enableHotpatching": "[variables('enableHotpatching')]",
+                            "patchMode": "[variables('patchMode')]"
+                        }
+                    }
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
+}
