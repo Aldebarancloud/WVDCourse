@@ -55,7 +55,7 @@
         "osDiskType": "Premium_LRS",
         "enableHotpatching": "false",
         "patchMode": "AutomaticByOS",
-        "ManagementToolsUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainServiceVMManagement/VMmanagementAADDS/CustomScriptExtention/ManagementTools.ps1"
+        "ManagementToolsUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/CustomScriptExtention/ManagementTools.ps1"
     },
     "resources": [
         {
