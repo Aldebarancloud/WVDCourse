@@ -1,3 +1,5 @@
-Add-WindowsFeature -Name "RSAT-AD-PowerShell" –IncludeAllSubFeature
+$LDAP= "RSAT"
+$GroupPolicy= "GPMC"
 
-Install-WindowsFeature –Name GPMC
+Install-WindowsFeature –Name $LDAP
+Install-WindowsFeature –Name $GroupPolicy

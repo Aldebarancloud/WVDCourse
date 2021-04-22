@@ -22,6 +22,12 @@
             "metadata": {
                 "description": "Location for all resources."
             }
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "secureString"
         }
     },
     "variables": {
@@ -39,7 +45,17 @@
         "sku": "Standard",
         "domainConfigurationType": "FullySynced",
         "filteredSync": "Disabled",
-        "urivnetdnsbastion": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns-bastion.json"
+        "urivnetdnsbastion": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainService/PrerequisiteID/Nested/aadds-update-vnet-dns-bastion.json",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('workloadsSubnetName'))]",
+        "ManagementvmSize": "Standard_D2s_v3",
+        "ManagementName": "Mgt-VM",
+        "ManagementnetworkInterfaceName": "Mgt-Nic",
+        "virtualMachineComputerName": "Mgt-VM",
+        "osDiskType": "Premium_LRS",
+        "enableHotpatching": "false",
+        "patchMode": "AutomaticByOS",
+        "ManagementToolsUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1AzureDomainServiceVMManagement/VMmanagementAADDS/CustomScriptExtention/ManagementTools.ps1"
     },
     "resources": [
         {
@@ -245,7 +261,112 @@
                     }
                 ]
             }
+        },
+                {
+            "name": "[variables('ManagementnetworkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/', variables('workloadsSubnetName'))]",
+                "[concat('Microsoft.Network/NetworkSecurityGroups/', variables('nsgName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('ManagementName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2020-12-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('ManagementnetworkInterfaceName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('ManagementvmSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[variables('osDiskType')]"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2016-Datacenter",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('ManagementnetworkInterfaceName'))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachineComputerName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true,
+                        "patchSettings": {
+                            "enableHotpatching": "[variables('enableHotpatching')]",
+                            "patchMode": "[variables('patchMode')]"
+                        }
+                    }
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(variables('ManagementName'), '/scriptextension')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', variables('ManagementName'))]"
+            ],
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "fileUris": [
+                        "[variables('ManagementToolsUri')]"
+                    ],
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File ManagementTools.ps1')]"
+
+                },
+                "protectedSettings": {
+                }
+            }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
 }
