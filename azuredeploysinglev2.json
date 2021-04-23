@@ -78,7 +78,16 @@
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]",
         "nsgId1": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName1'))]",
         "nsgId2": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName2'))]",
-        "apiVersion": "2015-06-15"
+        "apiVersion": "2015-06-15",
+        "accountType": "Standard_LRS",
+        "kind": "StorageV2",
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2",
+        "networkAclsDefaultAction": "Allow",
+        "networkAclsBypass": "AzureServices",
+        "allowSharedKeyAccess": "true",
+        "allowBlobPublicAccess": "true",
+        "supportsHttpsTrafficOnly":"true"
     },
     "resources": [
         {
@@ -148,25 +157,36 @@
             }
         },
         {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "accessTier": "[variables('accessTier')]",
+                "minimumTlsVersion": "[variables('minimumTlsVersion')]",
+                "supportsHttpsTrafficOnly": "[variables('supportsHttpsTrafficOnly')]",
+                "allowBlobPublicAccess": "[variables('allowBlobPublicAccess')]",
+                "allowSharedKeyAccess": "[variables('allowSharedKeyAccess')]",
+                "networkAcls": {
+                    "bypass": "[variables('networkAclsBypass')]",
+                    "defaultAction": "[variables('networkAclsDefaultAction')]",
+                    "ipRules": []
+                }
+            },
+            "dependsOn": [],
+            "sku": {
+                "name": "[variables('accountType')]"
+            },
+            "kind": "[variables('kind')]",
+            "tags": {}
+        },
+        {
             "name": "[variables('networkSecurityGroupName')]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-02-01",
             "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [
-                    {
-                        "name":"default-allow-rdp",
-                        "properties": {
-                            "priority": 300,
-                            "sourceAddressPrefix": "*",
-                            "protocol": "Tcp",
-                            "destinationPortRange": "80",
-                            "access": "Allow",
-                            "direction": "Inbound",
-                            "sourcePortRange": "*",
-                            "destinationAddressPrefix": "*"
-                        }
-                    }
                 ]
             }
         },
@@ -177,19 +197,6 @@
             "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [
-                    {
-                        "name":"default-allow-rdp",
-                        "properties": {
-                            "priority": 300,
-                            "sourceAddressPrefix": "*",
-                            "protocol": "Tcp",
-                            "destinationPortRange": "80",
-                            "access": "Allow",
-                            "direction": "Inbound",
-                            "sourcePortRange": "*",
-                            "destinationAddressPrefix": "*"
-                        }
-                    }
                 ]
             }
         },
@@ -200,19 +207,6 @@
             "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [
-                    {
-                        "name":"default-allow-rdp",
-                        "properties": {
-                            "priority": 300,
-                            "sourceAddressPrefix": "*",
-                            "protocol": "Tcp",
-                            "destinationPortRange": "80",
-                            "access": "Allow",
-                            "direction": "Inbound",
-                            "sourcePortRange": "*",
-                            "destinationAddressPrefix": "*"
-                        }
-                    }
                 ]
             }
         },
@@ -640,6 +634,7 @@
                     "bootDiagnostics": {
                         "enabled": true,
                         "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), variables('apiVersion')).primaryEndpoints.blob)]"
+                        
                     }
                 }
             },
