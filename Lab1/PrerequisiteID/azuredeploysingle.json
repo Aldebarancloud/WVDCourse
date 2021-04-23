@@ -28,6 +28,14 @@
             "metadata": {
                 "description": "The FQDN of the Active Directory Domain to be created"
             }
+        },
+        "storageAccountName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "metadata": {
+                "description": "Specifies the name of the Storage Account"
+            }
         }
     },
     "variables": {
@@ -63,7 +71,23 @@
         "AzureADConnectOuUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/DSC/ou.ps1",
         "AzureADConnectInstallationUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab1/PrerequisiteID/AzureAdConnect/Installationadconnect.ps1",
         "initDiskModuleURL": "https://github.com/Aldebarancloud/WVDCourse/blob/main/Lab1/PrerequisiteID/DSC/InitDisk.zip?raw=true" ,
-        "initDiskFunction": "InitDisk.ps1\\InitDisk"
+        "initDiskFunction": "InitDisk.ps1\\InitDisk",
+        "networkSecurityGroupName": "AD-nsg",
+        "networkSecurityGroupName1": "ADConnect-nsg",
+        "networkSecurityGroupName2": "Profil-nsg",
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]",
+        "nsgId1": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName1'))]",
+        "nsgId2": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName2'))]",
+        "apiVersion": "2015-06-15",
+        "accountType": "Standard_LRS",
+        "kind": "StorageV2",
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2",
+        "networkAclsDefaultAction": "Allow",
+        "networkAclsBypass": "AzureServices",
+        "allowSharedKeyAccess": "true",
+        "allowBlobPublicAccess": "true",
+        "supportsHttpsTrafficOnly":"true"
     },
     "resources": [
         {
@@ -133,6 +157,60 @@
             }
         },
         {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "accessTier": "[variables('accessTier')]",
+                "minimumTlsVersion": "[variables('minimumTlsVersion')]",
+                "supportsHttpsTrafficOnly": "[variables('supportsHttpsTrafficOnly')]",
+                "allowBlobPublicAccess": "[variables('allowBlobPublicAccess')]",
+                "allowSharedKeyAccess": "[variables('allowSharedKeyAccess')]",
+                "networkAcls": {
+                    "bypass": "[variables('networkAclsBypass')]",
+                    "defaultAction": "[variables('networkAclsDefaultAction')]",
+                    "ipRules": []
+                }
+            },
+            "dependsOn": [],
+            "sku": {
+                "name": "[variables('accountType')]"
+            },
+            "kind": "[variables('kind')]",
+            "tags": {}
+        },
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                ]
+            }
+        },
+        {
+            "name": "[variables('networkSecurityGroupName1')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                ]
+            }
+        },
+        {
+            "name": "[variables('networkSecurityGroupName2')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                ]
+            }
+        },
+        {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-02-01",
             "name": "[variables('AdnetworkInterfaceName')]",
@@ -152,7 +230,10 @@
                             }
                         }
                     }
-                ]
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId')]"
+                }
             }
         },
         {
@@ -175,7 +256,10 @@
                             }
                         }
                     }
-                ]
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId1')]"
+                }
             }
         },
                 {
@@ -198,7 +282,10 @@
                             }
                         }
                     }
-                ]
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId2')]"
+                }
             }
         },
         {
@@ -256,6 +343,12 @@
                             "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('AdnetworkInterfaceName'))]"
                         }
                     ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), variables('apiVersion')).primaryEndpoints.blob)]"
+                    }
                 }
             },
             "resources": [
@@ -428,6 +521,12 @@
                             "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('AdConnectnetworkInterfaceName'))]"
                         }
                     ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), variables('apiVersion')).primaryEndpoints.blob)]"
+                    }
                 }
             }
         },
@@ -530,6 +629,13 @@
                             "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('ProfilsnetworkInterfaceName'))]"
                         }
                     ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), variables('apiVersion')).primaryEndpoints.blob)]"
+                        
+                    }
                 }
             },
             "resources":[
