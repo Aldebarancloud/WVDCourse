@@ -1,23 +1,24 @@
 #Module
 Install-Module AZ
 Import-Module AZ
-$SubscriptionId = ""
+Install-Module azuread
+Import-Module azuread
 
 #Connection Needed for Azure 
+$SubscriptionId = ""
 Connect-AzAccount
 Select-AzSubscription -SubscriptionId $SubscriptionId
 
 #Connection Needed for Azure AD
-Install-Module azuread
-Import-Module azuread
 Connect-AzureAD
-$AdminGroupName = "WVD-Admin"
-$UserGroupName = "WVD-User"
+$UserGroupName = "VDIuser"
+$AdminGroupName = "VDIadmin"
 
 (Get-AzADGroup -DisplayName $UserGroupName).id
 #copy past the value on the variable $ObjectIDGroupUser
 
 (Get-AzADGroup -DisplayName $AdminGroupName).id
+#copy past the value on the variable $ObjectIDGroupAdmin
 
 #Variable
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -33,8 +34,9 @@ $rolenameUser = "Storage File Data SMB Share Contributor"
 $AdminGroupName = "WVD-Admin"
 $UserGroupName = "WVD-User"
 $ObjectIDGroupUser = ""
-$ObjectIDGroupAdmin = ""
-$domainname = "demoad.com"
+$ObjectIDGroupAdmin = "6"
+$domainname = ""
+$OUUsers = "WVD-Users"
 
 #Modify the execution Policy
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
@@ -62,22 +64,21 @@ Join-AzStorageAccountForAuth `
         -Name $StorageAccountName `
         -DomainAccountType "ComputerAccount" `
         #-DomainAccountType "ServiceLogonAccount"
-        -OrganizationalUnitDistinguishedName "OU=WVD-Users,DC=demoad,DC=com" `
+        -OrganizationalUnitDistinguishedName "OU=WVD-Users,DC=demoad,DC=com"
         #Modify the DC value by your domain name and his extention (exemple DC=ad,DC=.com)
-        -EncryptionType "<AES256/RC4/AES256,RC4>" `
 #
 
 $FileShareContributorRole = Get-AzRoleDefinition $rolenameAdmin 
 #Useone of the built-in roles: Storage File Data SMB Share Reader, Storage File Data SMB Share Contributor, Storage File Data SMB Share Elevated Contributor
 #Constrain the scope to the target file share
-$scope = "/subscriptions/$subscription/resourceGroups/$ResourceGroup/providers/Microsoft.Storage/storageAccounts/$StorageAccountName/fileServices/default/fileshares/$AzufileShareName"
+$scope = "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName/fileServices/default/fileshares/$AzufileShareName"
 #Assign the custom role to the target identity with the specified scope.
 New-AzRoleAssignment -ObjectId $ObjectIDGroupAdmin -RoleDefinitionName $FileShareContributorRole.Name -Scope $scope
 
 #Get the name of the custom role
 $FileShareContributorRole = Get-AzRoleDefinition $rolenameUser #Use one of the built-in roles: Storage File Data SMB Share Reader, Storage File Data SMB Share Contributor, Storage File Data SMB Share Elevated Contributor
 #Constrain the scope to the target file share
-$scope = "/subscriptions/$subscription/resourceGroups/$ResourceGroup/providers/Microsoft.Storage/storageAccounts/$StorageAccountName/fileServices/default/fileshares/$AzufileShareName"
+$scope = "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.Storage/storageAccounts/$StorageAccountName/fileServices/default/fileshares/$AzufileShareName"
 #Assign the custom role to the target identity with the specified scope.
 
 New-AzRoleAssignment -ObjectId $ObjectIDGroupUser -RoleDefinitionName $FileShareContributorRole.Name -Scope $scope
@@ -106,8 +107,10 @@ else
 }
 
 #Set the NTFS
-icals \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"$UserGroupName":(F)
-icals \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"$UserGroupName":(F)
-icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant "Creator Owner":(OI)(CI)(IO)(M)
+icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"VDIUser":F
+icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"VDIAdmin":F
+icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant "CREATOR OWNER":(OI)(CI)(IO)(M)
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /remove "Authenticated Users" 
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /remove "Builtin\Users"
+
+
