@@ -83,9 +83,6 @@ $scope = "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/provi
 
 New-AzRoleAssignment -ObjectId $ObjectIDGroupUser -RoleDefinitionName $FileShareContributorRole.Name -Scope $scope
 
-Debug-AzStorageAccountAuth -StorageAccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -Verbose
-#You can run the Debug-AzStorageAccountAuth cmdlet to conduct a set of basic checks on your AD configuration with the logged on AD user. This cmdlet is supported on AzFilesHybrid v0.1.2+ version. For more details on the checks performed in this cmdlet, see Azure Files Windows troubleshooting guide.
-
 # Confirm the feature is enabled
 $storageaccount = Get-AzStorageAccount `
         -ResourceGroupName $ResourceGroupName `
@@ -107,10 +104,12 @@ else
 }
 
 #Set the NTFS
+icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /inheritance:d
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"VDIUser":F
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant $domainname\"VDIAdmin":F
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /grant "CREATOR OWNER":(OI)(CI)(IO)(M)
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /remove "Authenticated Users" 
 icacls \\$StorageAccountName.file.core.windows.net\$AzufileShareName /remove "Builtin\Users"
 
-
+Debug-AzStorageAccountAuth -StorageAccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -Verbose
+#You can run the Debug-AzStorageAccountAuth cmdlet to conduct a set of basic checks on your AD configuration with the logged on AD user. This cmdlet is supported on AzFilesHybrid v0.1.2+ version. For more details on the checks performed in this cmdlet, see Azure Files Windows troubleshooting guide.
