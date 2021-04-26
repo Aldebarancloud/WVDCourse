@@ -1,7 +1,7 @@
 #Module
 Install-Module AZ
 Import-Module AZ
-$SubscriptionId = "f487f0e2-e87a-4545-bfd9-970d04b4f9d5"
+$SubscriptionId = ""
 
 #Connection Needed for Azure 
 Connect-AzAccount
@@ -24,10 +24,10 @@ $UserGroupName = "WVD-User"
 $AzFileSource = "https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.3/AzFilesHybrid.zip"
 $locationAzFiledownload = "D:\AzFilesHybrid.zip"
 $folder = "D:\AzFileHybrid"
-$ResourceGroupName = "AD"
-$StorageAccountName = "amoiv2"
-$AzufileShareName = "amoi"
-$StorageAccountKey = "JTwRJTZUl5oErpSuJgBYOCUskanqLG6eCKeevSPmHhQ/qtXZ1s+Akr83srpghGiKmWp0rJcUYu5ZuI7/oWnICQ=="
+$ResourceGroupName = ""
+$StorageAccountName = ""
+$AzufileShareName = ""
+$StorageAccountKey = ""
 $rolenameAdmin = "Storage File Data SMB Share Elevated Contributor"
 $rolenameUser = "Storage File Data SMB Share Contributor"
 $AdminGroupName = "WVD-Admin"

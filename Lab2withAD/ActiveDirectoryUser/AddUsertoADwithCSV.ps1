@@ -6,7 +6,6 @@ Import-Module ActiveDirectory
 $AdGroup = "VDIuser"
 $AdGroup2 = "VDIadmin"
 $Path = "OU=WVD-Users,DC=demoad,DC=com"
-
 ##change the DC value by your domain Name
 
 New-AdGroup -Name $AdGroup -GroupScope Global -Path $Path
@@ -31,6 +30,7 @@ $ADUsers = Import-Csv D:\UserCSV.csv -Delimiter ";"
 
 # Define UPN
 $UPN = "demoad.com"
+#modify the UPN by the UPN of your domain
 
 # Loop through each row containing user details in the CSV file
 foreach ($User in $ADUsers) {
@@ -87,10 +87,9 @@ foreach ($User in $ADUsers) {
     }
 }
 
-Read-Host -Prompt "Press Enter to exit"
-
 ###################################
 #    Add Users to the AD Group    #
 ###################################
 
 Add-AdGroupMember -Identity $AdGroup -Members Batman, Alfred.Pennyworth, Robin, Dick.Grayson, Batgirl, RedRobin, Nigthwing, Jason.Todd, Damian.Wayne, Tim.Drake, Barbara.Gordon, Catwoman, Selina.Kyle, RedHood, Ace.LeBatChien, Batwoman, Kathy.Kane, Terry.McGinnis, Joker, Superman, Harley.Quinn, GreenArrow, Aquaman, Poison.Ivy, Pingouin, Double.Face, Titans, Teen.Titans   
+Add-AdGroupMember -Identity $AdGroup2 -Members Batman, Alfred.Pennyworth, Robin, Dick.Grayson
