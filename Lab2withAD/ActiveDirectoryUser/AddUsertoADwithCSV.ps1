@@ -5,6 +5,8 @@
 Import-Module ActiveDirectory
 $AdGroup = "VDIuser"
 $AdGroup2 = "VDIadmin"
+$RDPRight = "Remote Desktop Users"
+$AdminRight = "Administrators"
 $Path = "OU=WVD-Users,DC=demoad,DC=com"
 ##change the DC value by your domain Name
 
@@ -93,3 +95,6 @@ foreach ($User in $ADUsers) {
 
 Add-AdGroupMember -Identity $AdGroup -Members Batman, Alfred.Pennyworth, Robin, Dick.Grayson, Batgirl, RedRobin, Nigthwing, Jason.Todd, Damian.Wayne, Tim.Drake, Barbara.Gordon, Catwoman, Selina.Kyle, RedHood, Ace.LeBatChien, Batwoman, Kathy.Kane, Terry.McGinnis, Joker, Superman, Harley.Quinn, GreenArrow, Aquaman, Poison.Ivy, Pingouin, Double.Face, Titans, Teen.Titans   
 Add-AdGroupMember -Identity $AdGroup2 -Members Batman, Alfred.Pennyworth, Robin, Dick.Grayson
+Add-AdGroupMember -Identity $AdminRight -Members VDIuser
+Add-ADGroupMember -Identity $RDPRight -Members VDIuser
+Add-ADGroupMember -Identity $RDPRight -Members VDIadmin
