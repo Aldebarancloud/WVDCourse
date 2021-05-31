@@ -1,7 +1,7 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 #Variables Teams
-$TeamsSource = "https://statics.teams.cdn.office.net/production-windows-x64/1.3.00.21759/Teams_windows_x64.msi"
+$TeamsSource = "https://statics.teams.cdn.office.net/production-windows-x64/1.4.00.8872/Teams_windows_x64.msi"
 $locationteamsdownload = "C:\"
 $locationteams = "C:\Teams_windows_x64.msi"
 
