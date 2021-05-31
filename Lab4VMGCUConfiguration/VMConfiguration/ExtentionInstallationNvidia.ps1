@@ -1,5 +1,11 @@
 #Install the Extention for your GPU card
 
+#Variables to modify
+$RessourceGroupName = "<your-VM-Resource-Group>"
+$VMname = "<your-VM-Name>"
+$location = "<your-VM-location>"
+$SubscriptionId = "<your-subscription-id-here>"
+
 #Connect to Azure
 #Module Installation
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -8,7 +14,6 @@ Import-Module AZ
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 
 #Connect to thge Azure Subscription
-$SubscriptionId = "<your-subscription-id-here>"
 Connect-AzAccount
 Select-AzSubscription -SubscriptionId $SubscriptionId
 
@@ -25,20 +30,15 @@ Select-AzSubscription -SubscriptionId $SubscriptionId
 #NV Series = Tesla M60 = Nvidia Extention
 #NVv3 Series = Tesla M60 = Nvidia Extention
 
-#Variable
-$RessourceGroupName = ""
-$VMname = ""
-$location = ""
+#Variable to not modify
 $Publisher = "Microsoft.HpcCompute"
 $ExtentionNameNvidia = "NvidiaGpuDriverWindows"
 $ExtentionTypeNvidia = "NvidiaGpuDriverWindows"
 
 #Install the Extention Nvidia
-
 Set-AzVMExtension -ResourceGroupName $RessourceGroupName -Location $location -VMName $VMname -ExtensionName $ExtentionNameNvidia -Publisher $Publisher -Type $ExtentionTypeNvidia -TypeHandlerVersion "1.3"
 
 #Check the Extention Installation for Nvidia
-
 Get-AzVMExtension -ResourceGroupName $RessourceGroupName -VMName $VMname -Name $ExtentionNameNvidia
 
 #Restart your VM

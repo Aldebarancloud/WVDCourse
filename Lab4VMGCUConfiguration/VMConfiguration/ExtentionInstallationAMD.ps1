@@ -1,5 +1,11 @@
 #Install the Extention for your GPU card
 
+#Variables to modify
+$RessourceGroupName = "<your-VM-Resource-Group>"
+$VMname = "<your-VM-Name>"
+$location = "<your-VM-location>"
+$SubscriptionId = "<your-subscription-id-here>"
+
 #Connect to Azure
 #Module Installation
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -8,7 +14,7 @@ Import-Module AZ
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 
 #Connect to thge Azure Subscription
-$SubscriptionId = "<your-subscription-id-here>"
+
 Connect-AzAccount
 Select-AzSubscription -SubscriptionId $SubscriptionId
 
@@ -18,10 +24,7 @@ Select-AzSubscription -SubscriptionId $SubscriptionId
 #Select AMD Extention based on the GPU inside your VM
 #NVv4 Series = AMD Radeon Instinct MI25 = AMD Extention
 
-#Variable
-$RessourceGroupName = ""
-$VMname = ""
-$location = ""
+#Variable to not modify
 $Publisher = "Microsoft.HpcCompute"
 $ExtentionNameAMD = "AmdGpuDriverWindows"
 $ExtentionTypeAMD = "AmdGpuDriverWindows"
