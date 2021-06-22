@@ -45,7 +45,28 @@
                 "Standard_ND12s",
                 "Standard_ND24s",
                 "Standard_ND24rs",
-                "Standard_ND40rs_v2"
+                "Standard_ND40rs_v2",
+                "Standard_NC6",
+                "Standard_NC12",
+                "Standard_NC24",
+                "Standard_NC24r",
+                "Standard_NC6_v2",
+                "Standard_NC12_v2",
+                "Standard_NC24_v2",
+                "Standard_NC24r_v2",
+                "Standard_NC6_v3",
+                "Standard_NC12_v3",
+                "Standard_NC24_v3",
+                "Standard_NC24r_v3",
+                "Standard_NV6",
+                "Standard_NV12",
+                "Standard_NV24",
+                "Standard_NV6_v2",
+                "Standard_NV12_v2",
+                "Standard_NV24_v2",
+                "Standard_NV12_v3",
+                "Standard_NV24_v3",
+                "Standard_NV48_v3"
             ]
         },
         "NvidiaVMDisktype":{
@@ -64,7 +85,7 @@
             "type": "string"
         },
         "adminPassword": {
-            "type": "secureString"
+            "type": "securestring"
         }
     },
     "variables": {
@@ -81,7 +102,8 @@
         "networkSecurityGroupName": "golden-nsg",
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]",
         "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', variables('GoldenvirtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('GoldensubnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', variables('GoldensubnetName'))]",
+        "TeamsInstallUri": "https://raw.githubusercontent.com/Aldebarancloud/WVDCourse/main/Lab5GoldenImageConfiguration/GoldenImageConfiguration/TeamsforWVD/TeamsForWVDv4gc.ps1"
     },
     "resources": [
         {
@@ -188,7 +210,7 @@
                 },
                 "storageProfile": {
                     "osDisk": {
-                        "createOption": "fromImage",
+                        "createOption": "FromImage",
                         "managedDisk": {
                             "storageAccountType": "[parameters('NvidiaVMDisktype')]"
                         }
@@ -227,13 +249,13 @@
                     }
                 }
             }
-        }
+        },
         {
             "name": "microsoft.nvidia-gpu-driver-windows-20210622115144",
             "apiVersion": "2015-01-01",
             "type": "Microsoft.Resources/deployments",
             "properties": {
-                "mode": "incremental",
+                "mode": "Incremental",
                 "templateLink": {
                     "uri": "https://catalogartifact.azureedge.net/publicartifactsmigration/microsoft.nvidia-gpu-driver-windows-arm.1.1.0/Artifacts/MainTemplate.json"
                 },
@@ -242,12 +264,12 @@
                         "value": "gcuextention"
                     },
                     "location": {
-                        "value": "[parameters('location')]",
+                        "value": "[parameters('location')]"
                     }
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', variables('GoldenImageName'))]"
             ]
         },
         {
@@ -255,7 +277,7 @@
             "apiVersion": "2015-01-01",
             "type": "Microsoft.Resources/deployments",
             "properties": {
-                "mode": "incremental",
+                "mode": "Incremental",
                 "templateLink": {
                     "uri": "https://catalogartifact.azureedge.net/publicartifactsmigration/microsoft.antimalware-windows-arm.1.0.2/Artifacts/MainTemplate.json"
                 },
@@ -264,7 +286,7 @@
                         "value": "gcuextention"
                     },
                     "location": {
-                        "value": "[parameters('location')]",
+                        "value": "[parameters('location')]"
                     },
                     "RealtimeProtectionEnabled": {
                         "value": "true"
@@ -286,7 +308,7 @@
             "dependsOn": [
                 "microsoft.nvidia-gpu-driver-windows-20210622115144"
             ]
-        }
+        },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "apiVersion": "2019-03-01",
@@ -304,7 +326,7 @@
                     "fileUris": [
                         "[variables('TeamsInstallUri')]"
                     ],
-                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File TeamsForWVDv2.ps1')]"
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File TeamsForWVDv4gc.ps1')]"
 
                 },
                 "protectedSettings": {
