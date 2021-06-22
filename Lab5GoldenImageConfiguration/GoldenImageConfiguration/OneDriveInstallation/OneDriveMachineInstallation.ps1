@@ -1,15 +1,26 @@
 #Uninstall One Drive current version
-#Do it manually through app andp
+#Do it manually through app and programs
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-#OneDrive Per-Machine Source
+#log store
+[string]$temPAth = 'C:\temp\'
+
+#Folder Creation
+if (!(Test-Path -Path $temPAth))
+{
+    $paramNewItem = @{
+        Path      = $temPAth
+        ItemType  = 'Directory'
+        Force     = $true
+    }
+
+    New-Item @paramNewItem
+}
+
+#Variables
 $OneDriveSource = "https://go.microsoft.com/fwlink/?linkid=844652"
-
-#Download Location
-$locationOneDrivedownload = "C:\OneDriveSetup.exe"
-
-#Uninstall the current version of OneDrive from the programs
+$locationOneDrivedownload = "C:\temp\OneDriveSetup.exe"
 
 #Download OneDrive Per-Machine
 Invoke-WebRequest -Uri $OneDriveSource -OutFile $locationOneDrivedownload
