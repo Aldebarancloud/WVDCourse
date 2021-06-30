@@ -251,6 +251,29 @@
             }
         },
         {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "name": "[concat(variables('GoldenImageName'), '/scriptextension')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', variables('GoldenImageName'))]"
+            ],
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "settings": {
+                    "fileUris": [
+                        "[variables('TeamsInstallUri')]"
+                    ],
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File TeamsForWVDv4gc.ps1')]"
+                },
+                "protectedSettings": {
+                }
+            }
+        },
+        {
             "name": "microsoft.nvidia-gpu-driver-windows-20210622115144",
             "apiVersion": "2015-01-01",
             "type": "Microsoft.Resources/deployments",
@@ -261,7 +284,7 @@
                 },
                 "parameters": {
                     "vmName": {
-                        "value": "gcuextention"
+                        "value": "[variables('GoldenImageName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -269,7 +292,8 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', variables('GoldenImageName'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', variables('GoldenImageName'))]",
+                "[concat(variables('GoldenImageName'), '/scriptextension')]"
             ]
         },
         {
@@ -283,7 +307,7 @@
                 },
                 "parameters": {
                     "vmName": {
-                        "value": "gcuextention"
+                        "value": "[variables('GoldenImageName')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -308,30 +332,6 @@
             "dependsOn": [
                 "microsoft.nvidia-gpu-driver-windows-20210622115144"
             ]
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2019-03-01",
-            "name": "[concat(variables('GoldenImageName'), '/scriptextension')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', variables('GoldenImageName'))]"
-            ],
-            "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.9",
-                "settings": {
-                    "fileUris": [
-                        "[variables('TeamsInstallUri')]"
-                    ],
-                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File TeamsForWVDv4gc.ps1')]"
-
-                },
-                "protectedSettings": {
-                }
-            }
         }
     ],
     "outputs": {
