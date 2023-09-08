@@ -5,9 +5,8 @@
       {
         "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
         "apiVersion": "2018-11-30",
-        "name": "MyManagedIdentity", // Replace with your desired managed identity name
-        "location": "East US", // Replace with your desired location
-        "properties": {}
+        "name": "MyManagedIdentity",
+        "location": "East US",
       }
     ]
   }
