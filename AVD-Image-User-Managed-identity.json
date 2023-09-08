@@ -6,7 +6,7 @@
         "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
         "apiVersion": "2018-11-30",
         "name": "MyManagedIdentity",
-        "location": "westeurope",
+        "location": "westeurope"
       }
     ]
   }
